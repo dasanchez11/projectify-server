@@ -1,7 +1,6 @@
 import { User } from "auth/models/user.model";
 import { Schema, model, Model } from "mongoose";
 
-// User Config
 const UserSchema = new Schema<User>({
   firstname: { type: String, required: true },
   lastname: { type: String, required: true },

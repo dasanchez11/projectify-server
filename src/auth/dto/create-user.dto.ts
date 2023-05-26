@@ -1,29 +1,28 @@
-import { User } from "auth/models/user.model";
+import { Expose } from "class-transformer";
 import { IsEmail, IsNotEmpty, IsString, MinLength } from "class-validator";
 
-export class CreateUserDTO
-  implements
-    Pick<
-      User,
-      "firstname" | "lastname" | "username" | "username" | "email" | "password"
-    >
-{
+export class CreateUserDTO {
+  @Expose()
   @IsNotEmpty()
   @IsString()
   firstname: string;
 
+  @Expose()
   @IsNotEmpty()
   @IsString()
   lastname: string;
 
+  @Expose()
   @IsNotEmpty()
   @IsString()
   username: string;
 
+  @Expose()
   @IsEmail()
   @IsString()
   email: string;
 
+  @Expose()
   @IsString()
   @IsNotEmpty()
   @MinLength(8)
