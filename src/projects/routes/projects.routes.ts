@@ -6,13 +6,15 @@ import {
   getAllProjectsController,
   postProjectController,
 } from "../project.controller";
+import { isAuthenticated } from "../../shared/middleware/authentication.middleware";
 
 export const projectRouter = Router();
 
-projectRouter.get("", getAllProjectsController);
+projectRouter.get("", isAuthenticated, getAllProjectsController);
 projectRouter.post(
   "",
+  isAuthenticated,
   validationMiddleware(CreateProjectDto),
   postProjectController
 );
-projectRouter.delete("/:projectId", deleteProjectController);
+projectRouter.delete("/:projectId", isAuthenticated, deleteProjectController);
