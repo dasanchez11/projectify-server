@@ -2,12 +2,12 @@ import { signInDTO } from "../dto/sign-in.dto";
 import { UserModel } from "../schema/user.schema";
 import { CreateUserDTO } from "auth/dto/create-user.dto";
 import { hashPassword } from "../utils/auth.utils";
-import { compare } from "bcryptjs";
+import * as bcrypt from "bcryptjs";
 import { handleJwtSign } from "../utils/jwt.utils";
 import { CustomError } from "../../shared/custom-error";
 
 export const getUserByEmail = (email: string) => {
-  return UserModel.findOne({ email }).lean();
+  return UserModel.findOne({ email });
 };
 
 export const getUserById = (id: string) => {
@@ -39,7 +39,7 @@ export const signInUser = async (creadentials: signInDTO) => {
       throw new CustomError("User not found", 404);
     }
 
-    const validPassword = await compare(password, user.password);
+    const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
       throw new CustomError("Invalid combination of email and password", 401);
     }
