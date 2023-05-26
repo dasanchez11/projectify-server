@@ -1,10 +1,10 @@
-import { ResponseError } from "../../shared/models/error.model";
 import { signInDTO } from "../dto/sign-in.dto";
 import { UserModel } from "../schema/user.schema";
 import { CreateUserDTO } from "auth/dto/create-user.dto";
 import { hashPassword } from "../utils/auth.utils";
 import { compare } from "bcryptjs";
 import { handleJwtSign } from "../utils/jwt.utils";
+import { CustomError } from "../../shared/custom-error";
 
 export const getUserByEmail = (email: string) => {
   return UserModel.findOne({ email }).lean();
@@ -18,10 +18,7 @@ export const registerUser = async (user: CreateUserDTO) => {
   try {
     const existingEmail = await getUserByEmail(user.email);
     if (existingEmail) {
-      const error = new Error() as ResponseError;
-      error.message = "Email Already Exists";
-      error.status = 403;
-      throw error;
+      throw new CustomError("Email Already Exists", 403);
     }
     const hashedPassword = await hashPassword(user.password);
     const hashedUser = { ...user, password: hashedPassword };
@@ -30,7 +27,7 @@ export const registerUser = async (user: CreateUserDTO) => {
     await newUser.save();
     return;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 };
 
@@ -39,22 +36,16 @@ export const signInUser = async (creadentials: signInDTO) => {
   try {
     const user = await getUserByEmail(email);
     if (!user) {
-      const error = new Error() as ResponseError;
-      error.message = "User not found";
-      error.status = 404;
-      throw error;
+      throw new CustomError("User not found", 404);
     }
 
     const validPassword = await compare(password, user.password);
     if (!validPassword) {
-      const error = new Error() as ResponseError;
-      error.message = "Invalid combination of email and password";
-      error.status = 401;
-      throw error;
+      throw new CustomError("Invalid combination of email and password", 401);
     }
     const result = handleJwtSign(user);
     return result;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 };

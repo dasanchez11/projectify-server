@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { registerUser, signInUser } from "./services/auth.service";
+import { handleErrorResponse } from "../shared/utils/utils";
 
 export const postRegisterUser = async (req: Request, res: Response) => {
   const { validatedDto } = req.body;
@@ -8,7 +9,7 @@ export const postRegisterUser = async (req: Request, res: Response) => {
     await registerUser(user);
     return res.status(200).json({ message: "user registered success" });
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    return handleErrorResponse(error, res);
   }
 };
 
@@ -19,6 +20,6 @@ export const postLoginUser = async (req: Request, res: Response) => {
     const authenticatedUSer = await signInUser(creadentials);
     res.status(200).json({ message: "Login success", user: authenticatedUSer });
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    return handleErrorResponse(error, res);
   }
 };

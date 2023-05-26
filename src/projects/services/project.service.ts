@@ -1,4 +1,4 @@
-import { ResponseError } from "../../shared/models/error.model";
+import { CustomError } from "../../shared/custom-error";
 import { CreateProjectDto } from "../dto/create-project.dto";
 import { ProjectModel } from "../schemas/project.schema";
 
@@ -14,14 +14,11 @@ export const getProject = async (id: string) => {
   try {
     const project = await ProjectModel.findById(id);
     if (!project) {
-      const error = new Error() as ResponseError;
-      error.message = "Project not found";
-      error.status = 404;
-      throw error;
+      throw new CustomError("Project not found", 404);
     }
     return project;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 };
 
@@ -39,10 +36,7 @@ export const deleteProject = async (id: string) => {
   try {
     const project = await getProjectById(id);
     if (!project) {
-      const error = new Error() as ResponseError;
-      error.message = "Project not found";
-      error.status = 404;
-      throw error;
+      throw new CustomError("Project not found", 404);
     }
     await ProjectModel.deleteOne({ _id: project._id });
     return;

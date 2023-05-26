@@ -1,7 +1,7 @@
 import { NextFunction, Response } from "express";
 import { verify } from "jsonwebtoken";
-import { ResponseError } from "../models/error.model";
 import { AuthRequest } from "../models/auth-request.model";
+import { CustomError } from "../custom-error";
 
 export const isAuthenticated = (
   req: AuthRequest,
@@ -38,9 +38,6 @@ const verifyToken = (authorization: string) => {
     const tokenResponse = verify(token, process.env.SECRET_KEY);
     return tokenResponse;
   } catch (err) {
-    const error = new Error() as ResponseError;
-    error.status = 500;
-    error.message = "Not Authorized";
-    throw error;
+    throw new CustomError("Not Authorized", 500);
   }
 };
