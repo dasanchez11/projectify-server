@@ -22,7 +22,7 @@ export const validationMiddleware =
 
     if (Array.isArray(result)) {
       return res.status(400).json({
-        error: getValidationErrors(result),
+        message: getValidationErrors(result),
       });
     }
     req.body["validatedDto"] = result;

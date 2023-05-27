@@ -18,7 +18,7 @@ export const postLoginUser = async (req: Request, res: Response) => {
   const creadentials = validatedDto;
   try {
     const authenticatedUSer = await signInUser(creadentials);
-    res.status(200).json({ message: "Login success", user: authenticatedUSer });
+    res.status(200).json({ message: "Login success", data: authenticatedUSer });
   } catch (error) {
     return handleErrorResponse(error, res);
   }

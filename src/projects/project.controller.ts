@@ -12,7 +12,7 @@ export const getAllProjectsController = async (
     const projects = await getAllProjects();
     return res
       .status(200)
-      .json({ message: "success getting projects", projects });
+      .json({ message: "success getting projects", data: projects });
   } catch (error) {
     throw new Error(error.message);
   }
@@ -29,7 +29,7 @@ export const postProjectController = async (
     const newProject = await createProject(project);
     return res
       .status(200)
-      .json({ message: "success creating project", project: newProject });
+      .json({ message: "success creating project", data: newProject });
   } catch (error) {
     throw new Error(error.message);
   }
