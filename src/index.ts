@@ -8,6 +8,7 @@ import mongoose from "mongoose";
 import { authRouter } from "./auth";
 import { seedRouter } from "./seed/routes/seed.route";
 import { projectRouter } from "./projects/routes/projects.routes";
+import { reportRouter } from "./reports/routes/report.routes";
 
 dotenv.config();
 const app = express();
@@ -29,6 +30,7 @@ const databaseUrl = process.env.MONGO_DB_URL;
 
 app.use("/auth", authRouter);
 app.use("/projects", projectRouter);
+app.use("/reports", reportRouter);
 app.use("/seed", seedRouter);
 
 mongoose
