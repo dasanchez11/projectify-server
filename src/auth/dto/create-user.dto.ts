@@ -13,11 +13,6 @@ export class CreateUserDTO {
   lastname: string;
 
   @Expose()
-  @IsNotEmpty()
-  @IsString()
-  username: string;
-
-  @Expose()
   @IsEmail()
   @IsString()
   email: string;
