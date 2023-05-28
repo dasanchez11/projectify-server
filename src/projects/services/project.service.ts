@@ -38,7 +38,7 @@ export const createProject = async (project: CreateProjectDto) => {
     await newProject.save();
     return newProject;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 };
 
@@ -48,9 +48,9 @@ export const deleteProject = async (id: string) => {
     if (!project) {
       throw new CustomError("Project not found", 404);
     }
-    await ProjectModel.deleteOne({ _id: project._id });
+    await ProjectModel.findByIdAndRemove(project._id);
     return;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 };
