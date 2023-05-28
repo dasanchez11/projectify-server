@@ -1,3 +1,4 @@
+import { JwtUser } from "../models/jwt.model";
 import { User } from "../models/user.model";
 
 export const mockUser: User = {
@@ -7,4 +8,12 @@ export const mockUser: User = {
   username: "johndoe",
   email: "johndoe@example.com",
   password: "password123",
+};
+
+export const mockJwtUser: JwtUser = {
+  token: "token",
+  firstname: "first",
+  email: "email",
+  userId: "userId",
+  expiresAt: 100,
 };
