@@ -35,8 +35,10 @@ export const postUserReportController = async (
   const report = validatedDto;
   const { userId }: JwtUser = req.user;
   try {
-    await createReport(report, userId);
-    return res.status(200).json({ message: "Report created Success" });
+    const result = await createReport(report, userId);
+    return res
+      .status(200)
+      .json({ message: "Report created Success", data: result });
   } catch (error) {
     return handleErrorResponse(error, res);
   }
@@ -68,6 +70,7 @@ export const deleteUserReportController = async (
   const { reportId } = req.params;
   try {
     await deleteReport(reportId, userId);
+    return res.status(200).json({ message: "Report delete success" });
   } catch (error) {
     return handleErrorResponse(error, res);
   }

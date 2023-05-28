@@ -3,7 +3,17 @@ import { CreateProjectDto } from "../dto/create-project.dto";
 import { ProjectModel } from "../schemas/project.schema";
 
 export const getAllProjects = () => {
-  return ProjectModel.find({});
+  return ProjectModel.aggregate([
+    {
+      $lookup: {
+        from: "reports",
+        localField: "_id",
+        foreignField: "projectId",
+        as: "reports",
+        pipeline: [{ $project: { hours: "reports.hours" } }],
+      },
+    },
+  ]);
 };
 
 export const getProjectById = (id: string) => {
