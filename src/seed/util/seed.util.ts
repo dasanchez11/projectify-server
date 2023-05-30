@@ -2,63 +2,103 @@ import { CreateProjectDto } from "../../projects/dto/create-project.dto";
 
 export const seedProjects: CreateProjectDto[] = [
   {
-    name: "Object 1",
-    description: "Description of Object 1",
+    name: "Fitness Tracker",
+    description:
+      "A mobile application for tracking personal fitness goals and progress.",
   },
   {
-    name: "Object 2",
-    description: "Description of Object 2",
+    name: "Handmade Jewelry Store",
+    description:
+      "An e-commerce website for selling handmade jewelry and accessories.",
   },
   {
-    name: "Object 3",
-    description: "Description of Object 3",
+    name: "Task Manager Pro",
+    description:
+      "A web-based project management tool for organizing tasks and teams.",
   },
   {
-    name: "Object 4",
-    description: "Description of Object 4",
+    name: "Tech Connect",
+    description:
+      "A social networking platform for connecting professionals in the tech industry.",
   },
   {
-    name: "Object 5",
-    description: "Description of Object 5",
+    name: "LearnUp",
+    description:
+      "An online learning platform offering courses on various subjects.",
   },
   {
-    name: "Object 6",
-    description: "Description of Object 6",
+    name: "FoodBuddy",
+    description:
+      "A food delivery mobile app that connects users with local restaurants.",
   },
   {
-    name: "Object 7",
-    description: "Description of Object 7",
+    name: "Wanderlust Explorer",
+    description:
+      "A travel planning website that helps users discover and book unique destinations.",
   },
   {
-    name: "Object 8",
-    description: "Description of Object 8",
+    name: "FinancePal",
+    description:
+      "A financial management application for budgeting and tracking expenses.",
   },
   {
-    name: "Object 9",
-    description: "Description of Object 9",
+    name: "EventPlanner",
+    description:
+      "An event management platform for organizing and promoting conferences and seminars.",
   },
   {
-    name: "Object 10",
-    description: "Description of Object 10",
+    name: "MelodyStream",
+    description:
+      "A music streaming service that offers a vast catalog of songs and personalized playlists.",
   },
   {
-    name: "Object 11",
-    description: "Description of Object 11",
+    name: "EcoSolutions",
+    description:
+      "A sustainable energy project focused on developing renewable energy solutions for residential and commercial use.",
   },
   {
-    name: "Object 12",
-    description: "Description of Object 12",
+    name: "HealthQuest",
+    description:
+      "A health and wellness app that provides personalized fitness plans, nutrition tracking, and mental health resources.",
   },
   {
-    name: "Object 13",
-    description: "Description of Object 13",
+    name: "Artify",
+    description:
+      "An online platform that connects artists with art enthusiasts, providing a space to showcase and sell their artwork.",
   },
   {
-    name: "Object 14",
-    description: "Description of Object 14",
+    name: "SmartHome",
+    description:
+      "A home automation system that enables users to control and monitor their household appliances and security remotely.",
   },
   {
-    name: "Object 15",
-    description: "Description of Object 15",
+    name: "TravelGenius",
+    description:
+      "A travel planning app that recommends personalized itineraries, attractions, and accommodations based on user preferences.",
+  },
+  {
+    name: "CodeCraft",
+    description:
+      "An interactive coding platform that offers coding challenges, tutorials, and a supportive community for programmers.",
+  },
+  {
+    name: "eFarm",
+    description:
+      "An online marketplace for farmers to sell their fresh produce directly to consumers, promoting local and sustainable farming.",
+  },
+  {
+    name: "RoboTech",
+    description:
+      "A robotics project dedicated to designing and building advanced robots for industrial automation and research purposes.",
+  },
+  {
+    name: "GreenScape",
+    description:
+      "A landscaping service that specializes in creating eco-friendly and aesthetically pleasing outdoor spaces for homes and businesses.",
+  },
+  {
+    name: "PetPal",
+    description:
+      "A pet care app that provides pet owners with access to veterinary services, pet sitting, and personalized pet care tips.",
   },
 ];
