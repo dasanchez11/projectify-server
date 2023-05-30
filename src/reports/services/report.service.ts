@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import { Aggregate, HydratedDocument, Query, Types } from "mongoose";
 import { CustomError } from "../../shared/custom-error";
 import { CreateReportDTO } from "../dto/create-report.dto";
 import { ReportModel } from "../schema/report.schema";
@@ -8,14 +8,16 @@ import { validEdit } from "../utils/week.utils";
 import { UpdateReportDTO } from "../dto/update-report.dto";
 import { Report } from "../models/report.model";
 
-export const getReportById = (id: string) => {
+export const getReportById = (
+  id: string
+): Promise<HydratedDocument<Report> | null> => {
   return ReportModel.findById(id);
 };
 
 export const getReportByProjectIdAndUserId = async (
   projectId: string,
   userId: string
-) => {
+): Promise<HydratedDocument<Report>> => {
   try {
     const foundReport = await ReportModel.findOne({ projectId, userId });
     if (!foundReport) {
@@ -27,9 +29,12 @@ export const getReportByProjectIdAndUserId = async (
   }
 };
 
-export const getReportsByUserWeek = (idUser: string, week: string) => {
+export const getReportsByUserWeek = (
+  idUser: string,
+  week: string
+): Aggregate<ReportWeekResponse[]> => {
   const userId = new Types.ObjectId(idUser);
-  return ReportModel.aggregate([
+  return ReportModel.aggregate<ReportWeekResponse>([
     { $match: { userId, week } },
     {
       $lookup: {
@@ -59,11 +64,14 @@ export const getReportByProjectUserAndWeek = (
   userId: string,
   projectId: string,
   week: string
-) => {
-  return ReportModel.find({ projectId, userId, week });
+): Query<Report[], Report, {}, Report, "find"> => {
+  return ReportModel.find<Report>({ projectId, userId, week });
 };
 
-export const createReport = async (report: CreateReportDTO, userId: string) => {
+export const createReport = async (
+  report: CreateReportDTO,
+  userId: string
+): Promise<ReportWeekResponse[]> => {
   try {
     const hasProjectReport = await getReportByProjectUserAndWeek(
       userId,
@@ -102,7 +110,7 @@ export const updateReport = async (
   report: UpdateReportDTO,
   reportId: string,
   userId: string
-) => {
+): Promise<void> => {
   try {
     const foundReport = await getReportById(reportId);
 
@@ -116,7 +124,10 @@ export const updateReport = async (
 
     const canEdit = validEdit(foundReport.week);
     if (!canEdit) {
-      throw new CustomError("Not Authorized to edit report", 401);
+      throw new CustomError(
+        "Not Authorized to update report for this week",
+        401
+      );
     }
 
     foundReport.hours = report.hours;
@@ -126,35 +137,42 @@ export const updateReport = async (
     }
 
     await foundReport.save();
+    return;
   } catch (error) {
     throw error;
   }
 };
 
-export const deleteReport = async (reportId: string, userId: string) => {
+export const deleteReport = async (
+  reportId: string,
+  userId: string
+): Promise<void> => {
   try {
     const foundReport = await getReportById(reportId);
     if (!foundReport) {
-      throw new CustomError("Report to update not found", 404);
+      throw new CustomError("Report to delete not found", 404);
     }
+
     if (foundReport.userId.toString() !== userId) {
-      throw new CustomError("Not Authorized to delete report", 404);
+      throw new CustomError("Not Authorized to delete report", 401);
     }
 
     const canEdit = validEdit(foundReport.week);
     if (!canEdit) {
-      throw new CustomError("Not Authorized to edit report", 401);
+      throw new CustomError("Not Authorized to delete report", 401);
     }
-
-    return ReportModel.deleteOne({ _id: foundReport._id });
+    await ReportModel.deleteOne({ _id: foundReport._id });
+    return;
   } catch (error) {
     throw error;
   }
 };
 
-export const getCompleteReportById = (id: string) => {
+export const getCompleteReportById = (
+  id: string
+): Aggregate<ReportWeekResponse[]> => {
   const reportId = new Types.ObjectId(id);
-  return ReportModel.aggregate([
+  return ReportModel.aggregate<ReportWeekResponse>([
     { $match: { _id: reportId } },
     {
       $lookup: {
@@ -180,7 +198,10 @@ export const getCompleteReportById = (id: string) => {
   ]);
 };
 
-const validateHours = async (userId: string, report: Report) => {
+export const validateHours = async (
+  userId: string,
+  report: Report
+): Promise<boolean> => {
   try {
     const userReports = (await getReportsByUserWeek(
       userId,

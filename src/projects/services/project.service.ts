@@ -1,9 +1,10 @@
 import { CustomError } from "../../shared/custom-error";
 import { CreateProjectDto } from "../dto/create-project.dto";
+import { Project } from "../models/project.model";
 import { ProjectModel } from "../schemas/project.schema";
 
 export const getAllProjects = () => {
-  return ProjectModel.aggregate([
+  return ProjectModel.aggregate<Project>([
     {
       $lookup: {
         from: "reports",
@@ -16,13 +17,13 @@ export const getAllProjects = () => {
   ]);
 };
 
-export const getProjectById = (id: string) => {
-  return ProjectModel.findById(id);
+export const getProjectById = (id: string): Promise<Project | null> => {
+  return ProjectModel.findById<Project | null>(id);
 };
 
-export const getProject = async (id: string) => {
+export const getProject = async (id: string): Promise<Project> => {
   try {
-    const project = await ProjectModel.findById(id);
+    const project = await ProjectModel.findById<Project | null>(id);
     if (!project) {
       throw new CustomError("Project not found", 404);
     }
@@ -32,7 +33,9 @@ export const getProject = async (id: string) => {
   }
 };
 
-export const createProject = async (project: CreateProjectDto) => {
+export const createProject = async (
+  project: CreateProjectDto
+): Promise<Project> => {
   try {
     const newProject = new ProjectModel(project);
     await newProject.save();
@@ -42,7 +45,7 @@ export const createProject = async (project: CreateProjectDto) => {
   }
 };
 
-export const deleteProject = async (id: string) => {
+export const deleteProject = async (id: string): Promise<void> => {
   try {
     const project = await getProjectById(id);
     if (!project) {

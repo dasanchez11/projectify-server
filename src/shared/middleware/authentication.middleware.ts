@@ -10,29 +10,37 @@ export const isAuthenticated = (
 ) => {
   const authHeader = req.get("Authorization");
   if (!authHeader) {
-    return res.status(401).json({ message: "Authorization Error" });
+    res.status(401);
+    res.json({ message: "Authorization Error" });
+    return res;
   }
   const authorization = req.headers.authorization;
   if (!authorization) {
-    return res.status(401).json({ message: "Authentication Invalid" });
+    res.status(401);
+    res.json({ message: "Authentication Invalid" });
+    return res;
   }
 
   let token;
   try {
     token = verifyToken(authorization);
   } catch (error) {
-    return res.status(error.status).json({ message: error.message });
+    res.status(error.status);
+    res.json({ message: error.message });
+    return res;
   }
 
   if (!token) {
-    return res.status(401).json({ message: "Problem Authorizing the request" });
+    res.status(401);
+    res.json({ message: "Problem Authorizing the request" });
+    return res;
   } else {
     req.user = token;
     next();
   }
 };
 
-const verifyToken = (authorization: string) => {
+export const verifyToken = (authorization: string) => {
   const token = authorization.slice(7);
   try {
     const tokenResponse = verify(token, process.env.SECRET_KEY);

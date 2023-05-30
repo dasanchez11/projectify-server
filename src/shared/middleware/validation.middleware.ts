@@ -2,7 +2,10 @@ import { plainToInstance, instanceToPlain } from "class-transformer";
 import { ValidationError, validate } from "class-validator";
 import { Response, Request, NextFunction } from "express";
 
-const validationPipe = async (schema: new () => {}, requestObject: object) => {
+export const validationPipe = async (
+  schema: new () => {},
+  requestObject: object
+) => {
   const transformedClass: any = plainToInstance(schema, requestObject, {});
   const errors = await validate(transformedClass);
 
@@ -15,21 +18,28 @@ const validationPipe = async (schema: new () => {}, requestObject: object) => {
 export const validationMiddleware =
   (validationSchema: any) =>
   async (req: Request, res: Response, next: NextFunction) => {
-    const result = await validationPipe(validationSchema, {
-      ...req.body,
-      ...req.params,
-    });
-
-    if (Array.isArray(result)) {
-      return res.status(400).json({
-        message: getValidationErrors(result),
+    try {
+      const result = await validationPipe(validationSchema, {
+        ...req.body,
+        ...req.params,
       });
+
+      if (Array.isArray(result)) {
+        const message = getValidationErrors(result);
+        res.status(400);
+        res.json({ message });
+        return res;
+      }
+      req.body["validatedDto"] = result;
+      next();
+    } catch (error) {
+      res.status(500);
+      res.json({ message: error.message });
+      return res;
     }
-    req.body["validatedDto"] = result;
-    next();
   };
 
-const getValidationErrors = (errors: ValidationError[]): string[] => {
+export const getValidationErrors = (errors: ValidationError[]): string[] => {
   let returnErrors: string[] = [];
   errors.forEach((error) => {
     if (error.constraints) {
