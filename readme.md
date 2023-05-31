@@ -66,13 +66,17 @@ MONGO_DB_URL = mongodb://<USERNAME>:<PASSWORD>@cluster0-shard-00-00.4ansb.mongod
 SECRET_KEY =
 ```
 
+\*\* The endpoint GET '/seed' creates a seed mock for the projects in the database
+
+\*\* In the `./postman` folder there is a JSON with the POSTMAN endpoints of the project
+
 4. Run the app on Docker
 
 ```
 docker-compose up -d
 ```
 
-5. Open the app on your web browser
+5. The server will be running on your local host at the address:
 
 ```
 http://localhost:3002/
