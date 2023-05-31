@@ -1,4 +1,4 @@
-export const validEdit = (dateInput: string) => {
+export const validEdit = (dateInput: string): boolean => {
   //Current
   const { weekNumber: currentWeek, year: currentYear } =
     getIsoDateFromCurrentDate();
@@ -15,7 +15,7 @@ export const validEdit = (dateInput: string) => {
   return inputDate <= currentDate && inputDate >= before3Weeks;
 };
 
-const getIsoDateFromCurrentDate = () => {
+export const getIsoDateFromCurrentDate = () => {
   const currentDate = new Date() as any;
   const startDate = new Date(currentDate.getFullYear(), 0, 1) as any;
   const days = Math.floor((currentDate - startDate) / (24 * 60 * 60 * 1000));
@@ -24,21 +24,21 @@ const getIsoDateFromCurrentDate = () => {
   return { weekNumber, year };
 };
 
-const getDateFromWeekAndYear = (week: number, year: number) => {
+export const getDateFromWeekAndYear = (week: number, year: number) => {
   const date = new Date(year, 0, 1 + (week - 1) * 7);
   const day = date.getDay();
   date.setDate(date.getDate() - day + 1);
   return date;
 };
 
-const getYearAndWeekFromInput = (input: string) => {
+export const getYearAndWeekFromInput = (input: string) => {
   const split = input.split("-");
   const yearResult = +split[0];
   const weekResult = +split[1].slice(1);
   return { yearResult, weekResult };
 };
 
-const getDateMinusThreeWeeks = (week: number, year: number) => {
+export const getDateMinusThreeWeeks = (week: number, year: number) => {
   const date = new Date(year, 0, 1 + (week - 1) * 7);
   date.setDate(date.getDate() - 21);
   return date;

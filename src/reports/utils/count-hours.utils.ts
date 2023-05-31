@@ -1,4 +1,3 @@
-import { CreateReportDTO } from "../dto/create-report.dto";
 import { ReportWeekResponse } from "../models/report-response.model";
 import { Report } from "../models/report.model";
 

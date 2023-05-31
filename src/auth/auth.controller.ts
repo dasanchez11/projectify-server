@@ -1,8 +1,11 @@
 import { Request, Response } from "express";
 import { registerUser, signInUser } from "./services/auth.service";
-import { handleErrorResponse } from "../shared/utils/utils";
+import { handleErrorResponse } from "../shared/utils/shared.utils";
 
-export const postRegisterUser = async (req: Request, res: Response) => {
+export const postRegisterUserController = async (
+  req: Request,
+  res: Response
+) => {
   const { validatedDto } = req.body;
   const user = validatedDto;
   try {
@@ -13,7 +16,7 @@ export const postRegisterUser = async (req: Request, res: Response) => {
   }
 };
 
-export const postLoginUser = async (req: Request, res: Response) => {
+export const postLoginUserController = async (req: Request, res: Response) => {
   const { validatedDto } = req.body;
   const creadentials = validatedDto;
   try {
