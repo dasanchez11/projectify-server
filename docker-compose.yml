@@ -1,0 +1,16 @@
+version: '3.7'
+services:
+  client:
+    container_name: 'projectify-back'
+    build:
+      context: .
+      dockerfile: .docker/dev.dockerfile
+    command: sh -c "npm start"
+    ports:
+      - 3002:3002
+    working_dir: /home/node/app
+    volumes:
+      - ./:/home/node/app
+      - node_modules:/home/node/app/node_modules
+volumes:
+  node_modules:
