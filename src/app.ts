@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import http from "http";
 import bodyParser from "body-parser";
 import cors from "cors";
@@ -26,6 +26,10 @@ app.use("/auth", authRouter);
 app.use("/projects", projectRouter);
 app.use("/reports", reportRouter);
 app.use("/seed", seedRouter);
+
+app.get("/", (req: Request, res: Response) => {
+  res.send("Hello Projectify");
+});
 
 export default app;
 export const server = http.createServer(app);

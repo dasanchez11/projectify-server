@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon",
     "test": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "vercel-build":"echo hello"
   },
   "keywords": [],
   "author": "",
