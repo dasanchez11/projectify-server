@@ -10,8 +10,15 @@ export const getAllProjects = () => {
         from: "reports",
         localField: "_id",
         foreignField: "projectId",
-        as: "reports",
-        pipeline: [{ $project: { hours: "reports.hours" } }],
+        as: "report",
+      },
+    },
+    { $addFields: { hours: { $sum: "$report.hours" } } },
+    {
+      $project: {
+        hours: 1,
+        name: 1,
+        description: 1,
       },
     },
   ]);
